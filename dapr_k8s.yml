@@ -1,0 +1,28 @@
+version: 1
+common:
+  resourcesPath: resources
+apps:
+  - appID: user-interface
+    appDirPath: apps/user-interface
+    appProtocol: grpc
+    appPort: 8501
+    containerImage: registry.zuru.local/user-interface:latest
+    createService: true
+    env:
+      APP_PORT: 8501
+  - appID: dialogue-orchestration
+    appDirPath: apps/dialogue-orchestration
+    appProtocol: grpc
+    appPort: 5300
+    containerImage: registry.zuru.local/dialogue-orchestration:latest
+    createService: true
+    env:
+      APP_PORT: 5300
+  - appID: dialogue-generator
+    appDirPath: apps/dialogue-generator
+    appProtocol: grpc
+    appPort: 5400
+    containerImage: registry.zuru.local/dialogue-generator:latest
+    createService: true
+    env:
+      APP_PORT: 5400

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Viewer</title>
+    <script src="https://unpkg.com/htmx.org"></script>
+</head>
+<body>
+    <div hx-get="/events" hx-trigger="load" hx-swap="outerHTML">
+        Waiting for messages...
+    </div>
+</body>
+</html>

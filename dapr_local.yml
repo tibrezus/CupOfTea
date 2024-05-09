@@ -1,0 +1,36 @@
+version: 1
+common:
+  resourcesPath: resources
+apps:
+  - appID: user-interface
+    appDirPath: apps/user-interface
+    appProtocol: http
+    appPort: 5200
+    appLogDestination: console
+    daprdLogDestination: console
+    logLevel: info
+    command: ["sh", "-c", "python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt && streamlit run app.py --server.port 5200"]
+  - appID: dialogue-orchestrator
+    appDirPath: apps/dialogue-orchestrator
+    appProtocol: grpc
+    appPort: 5300
+    appLogDestination: console
+    daprdLogDestination: console
+    logLevel: info
+    command: ["sh", "-c", "python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt && python app.py"]
+#  - appID: dialogue-orchestration
+#    appDirPath: apps/dialogue-orchestration
+#    appProtocol: grpc
+#    appPort: 5300
+#    appLogDestination: fileAndConsole
+#    daprdLogDestination: fileAndConsole
+#    logLevel: info
+#    command: ["sh", "-c", "CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main . && ./main"]
+  - appID: dialogue-generator
+    appDirPath: apps/dialogue-generator
+    appProtocol: http
+    appPort: 5400
+    appLogDestination: console
+    daprdLogDestination: console
+    logLevel: info
+    command: ["sh", "-c", "python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt && python app.py"]

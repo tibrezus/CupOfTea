@@ -1,0 +1,14 @@
+# dapr
+**/.dapr/
+
+# local file .env
+.env
+
+# venv
+**/.venv/
+
+# conda
+**/.conda/
+
+# streamlit
+**/.streamlit/

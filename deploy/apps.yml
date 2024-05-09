@@ -1,0 +1,128 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-interface
+  labels:
+    app: user-interface
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-interface
+  template:
+    metadata:
+      labels:
+        app: user-interface
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: user-interface
+        dapr.io/app-port: "8501"
+    spec:
+      containers:
+      - name: user-interface
+        image: registry.zuru.local/user-interface:latest
+        ports:
+        - containerPort: 8501
+        env:
+        - name: APP_PORT
+          value: "8501"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dialogue-orchestration
+  labels:
+    app: dialogue-orchestration
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dialogue-orchestration
+  template:
+    metadata:
+      labels:
+        app: dialogue-orchestration
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: dialogue-orchestration
+        dapr.io/app-port: "5300"
+    spec:
+      containers:
+      - name: dialogue-orchestration
+        image: registry.zuru.local/dialogue-orchestration:latest
+        ports:
+        - containerPort: 5300
+        env:
+        - name: APP_PORT
+          value: "5300"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dialogue-generator
+  labels:
+    app: dialogue-generator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dialogue-generator
+  template:
+    metadata:
+      labels:
+        app: dialogue-generator
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: dialogue-generator
+        dapr.io/app-port: "5400"
+    spec:
+      containers:
+      - name: dialogue-generator
+        image: registry.zuru.local/dialogue-generator:latest
+        ports:
+        - containerPort: 5400
+        env:
+        - name: APP_PORT
+          value: "5400"
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: user-interface
+  labels:
+    app: user-interface
+spec:
+  selector:
+    app: user-interface
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8501
+  type: ClusterIP
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: user-interface-ingress
+spec:
+  rules:
+  - host: user-interface.zuru.local
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: user-interface
+            port:
+              number: 80

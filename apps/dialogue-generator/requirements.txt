@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+dapr
+dapr-ext-grpc
+langchain-community
